@@ -1,0 +1,27 @@
+body {
+    background: #89909f;
+    padding: 3rem 0 0 3rem;
+    font-size: 12px;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+  }
+  
+  .site-wrap {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+  }
+  
+  main {
+    padding: 2rem;
+    border-top-left-radius: 2rem;
+    background: #ebecee;
+    margin-left: -2rem;
+    position: relative;
+    > header {
+      padding: 3rem 3rem 0 3rem;
+    }
+  }
+  
+
+  
