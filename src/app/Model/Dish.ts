@@ -1,5 +1,5 @@
 export interface Dish {
-    name: string;
-    description: string;
-    price: number;
+    nome: string;
+    ricetta: string;
+    prezzo: number;
   }

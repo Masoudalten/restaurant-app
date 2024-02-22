@@ -7,16 +7,20 @@ import { TableService } from '../Service/table.service';
 import { FormsModule } from '@angular/forms';
 import { OrderService } from '../Service/order.service';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+import { MenuServiceModule } from '../menu-service.module';
+import { TableServiceModule } from '../table-service.module';
 
 
 @Component({
   selector: 'app-order',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, MenuServiceModule, TableServiceModule],
   templateUrl: './order.component.html',
   styleUrl: './order.component.css'
 })
 export class OrderComponent implements OnInit {
+  tables: Table[] = [];
   menu: Dish[] = [];
   availableTables: Table[] = [];
   order: any[] = [];
@@ -25,21 +29,36 @@ export class OrderComponent implements OnInit {
   selectedTable: number | undefined;
   quantity: number = 1;
   showOrderSummary: boolean = false;
-  chosenTable: Table | null | undefined;
+  chosenTable: Table | undefined;
 
-  constructor(private menuService: MenuService, private tableService: TableService, private orderService: OrderService) { }
+  constructor(private menuService: MenuService, private tableService: TableService, private orderService: OrderService, private httpModule: HttpClientModule) { }
 
   ngOnInit() {
-    this.availableTables = this.tableService.tables.filter(table => table.status === 'Available');
-    this.menu = this.menuService.menu;
-    this.chosenTable = this.tableService.tableChosen;
+    this.availableTables = this.tables.filter(table => table.status === 'Available');
+    //this.menu = this.menuService.menu;
+    console.log(this.tableService.getChosenTable())
+    //this.chosenTable = this.tableService.tableChosen;
     this.selectedTable = this.chosenTable?.tNumber;
+
+    this.menuService.getMenuList().subscribe((data) => {
+      this.menu = data;
+      console.log(this.menu)
+    })
+
+    this.tableService.getTableList().subscribe({
+      next: (tables: Table[]) => {
+        this.tables = tables;
+      },
+      error: (error) => {
+        console.error(error)
+      }
+    });
   }
 
   handleMealSelection() {
-    const selectedDish = this.menu.find(dish => dish.name === this.selectedMeal);
+    const selectedDish = this.menu.find(dish => dish.nome === this.selectedMeal);
     if (selectedDish) {
-      this.selectedPrice = selectedDish.price;
+      this.selectedPrice = selectedDish.prezzo;
     }
   }
 
@@ -62,8 +81,8 @@ export class OrderComponent implements OnInit {
   }
 
   placeOrder() {
-    console.log(this.order)
-    this.orderService.order.push(this.order[0]);
-    console.log(this.orderService.order);
+    this.orderService.addOrder(this.order[0]);
+    this.order = [];
+    this.showOrderSummary = false;
   }
 }

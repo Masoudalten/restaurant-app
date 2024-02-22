@@ -1,4 +1,4 @@
-<div class="d-flex flex-wrap">
+<div class="d-flex flex-wrap overflow-auto vh-100 pb-5">
     <div *ngFor="let table of tables" class="p-3" [ngClass]="{'occupied': table.status === 'Occupied'}">
         <!-- table.status === 'Occupied' ? null :  -->
         <a [routerLink]="'/new-order'"><img src="assets/table.png" alt="image"

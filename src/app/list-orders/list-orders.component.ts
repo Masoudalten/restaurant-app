@@ -18,14 +18,20 @@ export class ListOrdersComponent implements OnInit {
 
   constructor(private orderService: OrderService) { }
   ngOnInit() {
-    this.orders = this.orderService.order
+    this.loadOrders();
+  }
+
+  loadOrders(){
+    this.orders = this.orderService.getOrders();
   }
   removeOrder(orderId: number) {
-    this.orders = this.orders.filter(order => order[0].tNumber !== orderId);
+    this.orderService.removeOrder(orderId);
+    this.loadOrders();
   }
 
   checkout(orderId: number) {
     this.selectedOrder = this.orders.filter(order => order[0].tNumber === orderId);
     this.orderService.selectedOrder = this.selectedOrder;
+    this.removeOrder(orderId);
   }
 }

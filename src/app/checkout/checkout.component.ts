@@ -24,12 +24,9 @@ export class CheckoutComponent implements OnInit {
 
   getTotal() {
     if (this.order.length > 0) {
-      const total = this.order[0].reduce((acc: number, item: { price: number; }) => {
-        return acc + item.price;
-      }, 0);
-      this.total = total.toFixed(2);
+      this.total = this.orderService.getTotal(this.order[0]);
+    } else {
+      console.log("Order does not exist")
     }
-
   }
 }
-

@@ -15,7 +15,7 @@
             <div class="form-group">
                 <label for="meal">Choose a Meal:</label>
                 <select id="meal" name="meal" [(ngModel)]="selectedMeal">
-                    <option *ngFor="let dish of menu" [value]="dish.name">{{dish.name}}</option>
+                    <option *ngFor="let dish of menu" [value]="dish.nome">{{dish.nome}}</option>
                 </select>
             </div>
             <div class="form-group">
