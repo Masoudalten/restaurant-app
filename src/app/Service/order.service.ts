@@ -5,8 +5,8 @@ import { Order } from "../Model/Order";
     providedIn: 'root',
 })
 export class OrderService {
-    orders: Order[] = [];
-    selectedOrder: Order[] = [];
+    orders: any[] = [];
+    checkoutOrder: Order[] = [];
 
     constructor() { }
 
@@ -22,8 +22,10 @@ export class OrderService {
         return this.orders.filter(order => order.tNumber === tableNumber);
     }
 
-    removeOrder(orderIndex: number): void {
-        this.orders.splice(orderIndex, 1);
+    removeOrder(orderId: number): void {
+        const indexToRemove = this.orders.findIndex(order => order[0].tNumber === orderId)
+        console.log(indexToRemove);
+        this.orders.splice(indexToRemove, 1);
     }
 
     updateOrder(orderIndex: number, updatedOrder: Order): void {

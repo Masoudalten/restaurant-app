@@ -4,13 +4,9 @@
         <form (ngSubmit)="addItem()">
             <div class="form-group">
                 <label for="table">Choos a Table</label>
-                <input type="number" id="table" name="table" value="{{chosenTable?.tNumber}}">
-
-                <!-- <select name="table" id="table" name="table"> -->
-                    
-                    <!-- <option selected>{{chosenTable?.tNumber}}</option> -->
-                    <!-- <option *ngFor="let table of availableTables" [value]="table.tNumber">{{table.tNumber}}</option> -->
-                <!-- </select> -->
+                <select id="table" name="table" [(ngModel)]="selectedTableNumber">
+                    <option *ngFor="let table of tables" [value]="table.tNumber">{{table.tNumber}}</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="meal">Choose a Meal:</label>
@@ -29,7 +25,7 @@
     <div class="container order-summary" *ngIf="showOrderSummary">
         <h2>Order Summary</h2>
         <div *ngFor="let tableOrder of order">
-            <h3>Table {{ tableOrder[0]?.tNumber }} Order:</h3>
+            <h3>Table {{ tableOrder[0].tNumber }} Order:</h3>
             <div *ngFor="let item of tableOrder" class="d-flex flex-column">
                 <span>Meal: {{item.name}}</span>
                 <span>Quantilty: {{item.quantity}}</span>

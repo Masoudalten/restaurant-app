@@ -1,12 +1,14 @@
 <div class="d-flex flex-wrap overflow-auto vh-100 pb-5">
     <div *ngFor="let table of tables" class="p-3" [ngClass]="{'occupied': table.status === 'Occupied'}">
-        <!-- table.status === 'Occupied' ? null :  -->
-        <a [routerLink]="'/new-order'"><img src="assets/table.png" alt="image"
-                width="150" [ngStyle]="{'filter': table.status === 'Occupied' ? 'grayscale(100%)' : 'none'}"
-                (click)="choosedTable(table.tNumber)"></a>
+        <a [routerLink]="'/new-order'">
+            <img src="assets/table.png" alt="image" width="150"
+                [ngStyle]="{'filter': table.status === 'Occupied' ? 'grayscale(100%)' : 'none'}"
+                (click)="selectTable(table.tNumber)">
+        </a>
         <div>{{ table.name }}</div>
         <div>Capacity: {{ table.capacity }}</div>
         <div>Status: {{ table.status }}</div>
         <hr>
     </div>
 </div>
+<!-- <app-order [selectedTable]="selectedTable"></app-order> -->

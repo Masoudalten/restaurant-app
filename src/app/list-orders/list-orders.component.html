@@ -1,6 +1,6 @@
 <div class="orders-container container">
     <div *ngFor="let tableOrder of orders">
-        <div class="table-number">Table: {{ tableOrder[0]?.tNumber}}</div>
+        <div class="table-number">Table: {{ tableOrder[0].tNumber}}</div>
         <div *ngFor="let order of tableOrder" class="order">
             <div class="order-details">
                 <div class="order-item font-weight-bold">{{ order.name }}</div>

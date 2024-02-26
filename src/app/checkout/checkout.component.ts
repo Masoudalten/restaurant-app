@@ -18,7 +18,8 @@ export class CheckoutComponent implements OnInit {
   constructor(private orderService: OrderService) { }
 
   ngOnInit() {
-    this.order = this.orderService.selectedOrder;
+    this.order = this.orderService.checkoutOrder;
+    console.log(this.order)
     this.getTotal();
   }
 

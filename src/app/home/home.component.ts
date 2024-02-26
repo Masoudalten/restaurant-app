@@ -16,25 +16,22 @@ import { TableServiceModule } from '../table-service.module';
 })
 export class HomeComponent implements OnInit {
   tables: Table[] = [];
+  selectedTable: Table | undefined;
 
   constructor(private tableService: TableService) { }
 
   ngOnInit() {
-    this.tableService.getTableList().subscribe({
-      next: (tables: Table[]) => {
-        this.tables = tables;
-      },
-      error: (error) => {
-        console.error(error)
-      }
+    this.loadTables();
+  }
+
+  loadTables() {
+    this.tableService.getTableList().subscribe((tables) => {
+      this.tables = tables;
     });
   }
 
-  choosedTable(tableId: number) {
-    const tableChosen = this.tables.find(table => table.tNumber === tableId);
-    //this.tableService.tableChosen = tableChosen;
-    this.tableService.setChosenTable(tableChosen);
-    console.log(this.tableService.getChosenTable())
+  selectTable(tableId: number) {
+    this.selectedTable = this.tables.find(table => table.tNumber === tableId);
+    //console.log('Selected Table:', this.selectedTable); // Debugging statement
   }
 }
-

@@ -9,7 +9,7 @@ import { HomeComponent } from "./home/home.component";
     standalone: true,
     templateUrl: './app.component.html',
     styleUrl: './app.component.css',
-    imports: [RouterOutlet, HeaderComponent, SidebarComponent, HomeComponent]
+    imports: [RouterOutlet, HeaderComponent, SidebarComponent, ]
 })
 export class AppComponent {
   title = 'ristorant-app';
