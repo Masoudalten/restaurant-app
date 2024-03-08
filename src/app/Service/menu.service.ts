@@ -1,4 +1,4 @@
-import { Injectable, NgModule } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { Dish } from "../Model/Dish";
 import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";

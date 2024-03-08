@@ -1,18 +1,16 @@
 <div class="container">
     <h1>Order Summary</h1>
-    <div *ngFor="let tableOrder of order">
-        <h2>Table number: {{tableOrder[0].tNumber}}</h2>
-        <div *ngFor="let item of tableOrder">
-            <div class="order-summary">
-                <div class="item">
-                    <span>{{item.name}} X {{item.quantity}}</span>
-                    <span>{{item.price}}€</span>
-                </div>
+    <h2>Table number: {{tableNumber}}</h2>
+    <div *ngFor="let tableOrder of checkoutOrder[0].orderItems">
+        <div class="order-summary">
+            <div class="item">
+                <span>{{tableOrder.name}} X {{tableOrder.quantity}}</span>
+                <span>{{tableOrder.price}}€</span>
             </div>
         </div>
-        <div class="total">
-            <span>Total Amount:</span>
-            <span>{{total}}€</span>
-        </div>
+    </div>
+    <div class="total">
+        <span>Total Amount:</span>
+        <span>{{total}}€</span>
     </div>
 </div>

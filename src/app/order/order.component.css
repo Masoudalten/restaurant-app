@@ -48,15 +48,27 @@ button {
     transition: background-color 0.3s;
 }
 
+.button-disabled {
+    background-color: gray;
+    color: #999;
+    color: #f4f4f4;
+}
+
+.button-disabled:hover {
+    background-color: gray;
+    cursor: not-allowed;
+}
+
 button:hover {
     background-color: #45a049;
+
 }
 
 button:active {
     background-color: #3e8e41;
 }
 
-.order-summary{
+.order-summary {
     margin-left: 10px;
     width: 500px;
 }

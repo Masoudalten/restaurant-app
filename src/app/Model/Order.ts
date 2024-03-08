@@ -1,6 +1,11 @@
 export interface Order {
-    tNumber: number;
-    name: string;
-    price: number;
-    quantity: number;
+    orderId: number;
+    orderItems: [{
+        tNumber: number;
+        name: string;
+        price: number;
+        quantity: number;
+    }]
+    time: string;
+    total: number;
 }

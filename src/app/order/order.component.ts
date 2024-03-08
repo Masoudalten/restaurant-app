@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Dish } from '../Model/Dish';
 import { MenuService } from '../Service/menu.service';
 import { CommonModule } from '@angular/common';
@@ -7,34 +7,45 @@ import { TableService } from '../Service/table.service';
 import { FormsModule } from '@angular/forms';
 import { OrderService } from '../Service/order.service';
 import { RouterModule } from '@angular/router';
-import { MenuServiceModule } from '../menu-service.module';
-import { TableServiceModule } from '../table-service.module';
 import { ChangeDetectorRef } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { EventService } from '../Service/event.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
   selector: 'app-order',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, MenuServiceModule, TableServiceModule],
+  imports: [CommonModule, FormsModule, RouterModule, HttpClientModule],
   templateUrl: './order.component.html',
-  styleUrl: './order.component.css'
+  styleUrl: './order.component.css',
+  providers: [OrderService, TableService, MenuService]
 })
-export class OrderComponent implements OnInit {
-  selectedTableNumber: Table | undefined;
+export class OrderComponent implements OnInit, OnDestroy {
+  selectedTableNumber: number | undefined;
   tables: Table[] = [];
   menu: Dish[] = [];
   availableTables: Table[] = [];
   order: any[] = [];
   selectedMeal: string = '';
   selectedPrice: number = 0;
-  //selectedTable: number | undefined;
+  selectedTable: Table | undefined;
   quantity: number = 1;
   showOrderSummary: boolean = false;
   chosenTable: Table | undefined;
+  private tableChangeSubscription: Subscription | undefined;
 
-  constructor(private menuService: MenuService, private tableService: TableService, private orderService: OrderService, private cdr: ChangeDetectorRef) { }
+  constructor(private menuService: MenuService, private tableService: TableService, private orderService: OrderService, private cdr: ChangeDetectorRef, private eventService: EventService) { }
 
   ngOnInit() {
+
+    this.tableChangeSubscription = this.eventService.selectedTableChange.subscribe((data: Table | null) => {
+      if (data !== null) {
+        this.selectedTable = data;
+        this.selectedTableNumber = data.tNumber;
+      }
+    })
+    console.log(this.selectedTable);
     this.tableService.getTableList().subscribe((tables) => {
       this.tables = tables;
     });
@@ -42,7 +53,6 @@ export class OrderComponent implements OnInit {
     this.menuService.getMenuList().subscribe((data) => {
       this.menu = data;
     })
-
   }
 
 
@@ -71,11 +81,18 @@ export class OrderComponent implements OnInit {
     this.showOrderSummary = true;
   }
 
-  placeOrder() {
+  placeOrder(tableId: number) {
     this.order.forEach(orderItem => {
-      this.orderService.addOrder(orderItem)
+      this.orderService.addOrder(orderItem).subscribe();
     })
     this.order = [];
     this.showOrderSummary = false;
+    this.tableService.changeStatusOccupied(tableId);
+  }
+
+  ngOnDestroy() {
+    if (this.tableChangeSubscription) {
+      this.tableChangeSubscription.unsubscribe();
+    }
   }
 }

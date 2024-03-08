@@ -1,37 +1,36 @@
-<div class="d-flex ">
+<div class="d-flex">
     <div class="container">
         <h1>New Order</h1>
-        <form (ngSubmit)="addItem()">
+        <form (ngSubmit)="addItem()" #orderForm="ngForm">
             <div class="form-group">
-                <label for="table">Choos a Table</label>
-                <select id="table" name="table" [(ngModel)]="selectedTableNumber">
-                    <option *ngFor="let table of tables" [value]="table.tNumber">{{table.tNumber}}</option>
-                </select>
+                <label for="table">Choose a Table</label>
+                <input type="number" id="table" name="table" [(ngModel)]="selectedTableNumber" 
+                    [value]="selectedTable?.tNumber" required>
             </div>
             <div class="form-group">
                 <label for="meal">Choose a Meal:</label>
-                <select id="meal" name="meal" [(ngModel)]="selectedMeal">
+                <select id="meal" name="meal" [(ngModel)]="selectedMeal" required>
                     <option *ngFor="let dish of menu" [value]="dish.nome">{{dish.nome}}</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="quantity">Quantity:</label>
-                <input type="number" id="quantity" name="quantity" [(ngModel)]="quantity" min="1" value="1">
+                <input type="number" id="quantity" name="quantity" [(ngModel)]="quantity" min="1" value="1" required>
             </div>
-            <button type="submit">Add</button>
+            <button type="submit" [class.button-disabled]="!orderForm.valid" [disabled]="!orderForm.valid">Add</button>
         </form>
     </div>
 
-    <div class="container order-summary" *ngIf="showOrderSummary">
+    <div class="container order-summary" *ngIf="showOrderSummary && order && order.length > 0">
         <h2>Order Summary</h2>
         <div *ngFor="let tableOrder of order">
             <h3>Table {{ tableOrder[0].tNumber }} Order:</h3>
             <div *ngFor="let item of tableOrder" class="d-flex flex-column">
                 <span>Meal: {{item.name}}</span>
-                <span>Quantilty: {{item.quantity}}</span>
+                <span>Quantity: {{item.quantity}}</span>
                 <span>Price: {{item.price}}</span>
             </div>
+            <button [routerLink]="'/orders-list'" class="mr-2" (click)="placeOrder(tableOrder[0].tNumber)">Place Order</button>
         </div>
-        <button [routerLink]="'/orders-list'" class="mr-2" (click)="placeOrder()">Place Order</button>
     </div>
 </div>

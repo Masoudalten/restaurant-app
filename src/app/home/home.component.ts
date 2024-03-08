@@ -4,7 +4,9 @@ import { TableService } from '../Service/table.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { OrderComponent } from "../order/order.component";
-import { TableServiceModule } from '../table-service.module';
+import { OrderService } from '../Service/order.service';
+import { HttpClientModule } from '@angular/common/http';
+import { EventService } from '../Service/event.service';
 
 
 @Component({
@@ -12,13 +14,15 @@ import { TableServiceModule } from '../table-service.module';
   standalone: true,
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
-  imports: [CommonModule, RouterModule, OrderComponent, TableServiceModule]
+  imports: [CommonModule, RouterModule, OrderComponent, HttpClientModule],
+  providers: [OrderService, TableService]
 })
+
 export class HomeComponent implements OnInit {
   tables: Table[] = [];
-  selectedTable: Table | undefined;
+  //selectedTable: Table | undefined;
 
-  constructor(private tableService: TableService) { }
+  constructor(private tableService: TableService, private eventService: EventService) { }
 
   ngOnInit() {
     this.loadTables();
@@ -31,7 +35,10 @@ export class HomeComponent implements OnInit {
   }
 
   selectTable(tableId: number) {
-    this.selectedTable = this.tables.find(table => table.tNumber === tableId);
+    const selectedTable = this.tables.find(table => table.tNumber === tableId);
     //console.log('Selected Table:', this.selectedTable); // Debugging statement
+    if (selectedTable !== undefined) {
+      this.eventService.emitCheckSelectedTableChange(selectedTable);
+    } 
   }
 }
