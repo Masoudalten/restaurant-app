@@ -1,6 +1,6 @@
-<div class="d-flex flex-wrap overflow-auto vh-100 pb-5">
-    <div *ngFor="let table of tables" class="p-3" [ngClass]="{'occupied': table.status === 'Occupied'}">
-        <a [routerLink]="'/new-order'">
+<div class="d-flex flex-wrap overflow-auto pb-5" style="height: 90vh;">
+    <div *ngFor="let table of tables" class="p-3" [ngClass]="{'occupied': table.status === 'Occupied'}" class="tooltip">
+        <a [routerLink]="'/new-order'" [appTooltip]="tooltipContent" [attr.data-table-number]="table.tNumber">
             <img src="assets/table.png" alt="image" width="150"
                 [ngStyle]="{'filter': table.status === 'Occupied' ? 'grayscale(100%)' : 'none'}"
                 (click)="selectTable(table.tNumber)">
@@ -11,4 +11,3 @@
         <hr>
     </div>
 </div>
-<!-- <app-order [selectedTable]="selectedTable"></app-order> -->

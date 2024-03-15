@@ -36,3 +36,10 @@
   .occupied{
     color: gray;
   }
+
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    opacity: 100;
+  }
+  

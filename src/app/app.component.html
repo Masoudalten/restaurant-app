@@ -1,6 +1,6 @@
-<div class="site-wrap" >
-  <app-sidebar></app-sidebar>
-  <main>
+<div class="site-wrap">
+  <app-sidebar (menuToggleChange)="handleMenuToggle($event) "></app-sidebar>
+  <main [class.isMenuClose]="menuToggle">
     <app-header></app-header>
     <router-outlet></router-outlet>
   </main>

@@ -1,7 +1,7 @@
 <div class="container">
     <h1>Order Summary</h1>
     <h2>Table number: {{tableNumber}}</h2>
-    <div *ngFor="let tableOrder of checkoutOrder[0].orderItems">
+    <div *ngFor="let tableOrder of checkoutOrder[0]?.orderItems">
         <div class="order-summary">
             <div class="item">
                 <span>{{tableOrder.name}} X {{tableOrder.quantity}}</span>

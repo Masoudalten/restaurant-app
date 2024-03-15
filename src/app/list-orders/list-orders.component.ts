@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Order } from '../Model/Order';
 import { OrderService } from '../Service/order.service';
 import { RouterLink } from '@angular/router';
@@ -15,20 +15,32 @@ import { EventService } from '../Service/event.service';
   styleUrl: './list-orders.component.css',
   providers: [OrderService, TableService]
 })
-export class ListOrdersComponent implements OnInit {
+export class ListOrdersComponent implements OnInit, AfterViewInit {
   orders: any[] = [];
+  isLoading: boolean = false;
 
-  constructor(private orderService: OrderService, private tableService: TableService) { }
+  constructor(private orderService: OrderService, private tableService: TableService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.loadOrders();
   }
+  
+  ngAfterViewInit() {
+    this.loadOrders();
+  }
 
   loadOrders() {
+    this.isLoading = true;
     this.orderService.getOrders().subscribe((data) => {
-      this.orders = data
-      console.log(this.orders)
-    })
+      this.orders = data;
+      this.isLoading = false;
+      this.cdr.detectChanges();
+    },
+      (error) => {
+        console.log('Error loading orders', error);
+        this.isLoading = false;
+      }
+    )
   }
 
   removeOrder(orderId: number) {
